@@ -9,3 +9,6 @@ o projeto só tem 2 páginas:
 
 Ambas as páginas são bem parecidas a unica diferença é de onde vem os dados, a principal vem da API e a outra página vem do banco de dados,
 a página do Banco de Dados é nescessário adicionar items a ela pelo formulário, e nela como estamos mexendo com banco de dados é possivel ao clicar em ver detalher, excluir o item do banco de dados
+
+
+Obs: como o projeto tem banco de dados, é nescessário configurar um arquivo .env, pode usar o arquivo .env.example como exemplo para criar o arquivo .env e mude as informações de Database(DB) de acordo com o seu banco de dados.
