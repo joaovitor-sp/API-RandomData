@@ -14,9 +14,9 @@
         <img src="{{ $person->avatar }}" alt="{{ $person->first_name }} {{ $person->last_name }}">
         <div>
             <h1 class="title">{{ $person->first_name }} {{ $person->last_name }}</h1>
-            <h2 class="subtitle">{{ $person->employment_title }}</h2>
-            <span class="description">{{ $person->address_country }}</span>
-            <button type="button" onclick="getPersonDetail({{ $person->id }})" class="button-card" data-bs-toggle="modal" data-bs-target="#detail">
+            <h2 class="subtitle">{{ $person->email }}</h2>
+            <span class="description">{{ $person->gender }}</span>
+            <button type="button" onclick="getPersonDetail('{{ $person->uid }}')" class="button-card" data-bs-toggle="modal" data-bs-target="#detail">
                 Show Details
             </button>
         </div>
@@ -43,20 +43,19 @@
 <script>
     const peoples = @json($people);
 
-    function getPersonDetail(id) {
+    function getPersonDetail(uid) {
         const modalBody = document.querySelector('#modal-body');
-        const person = peoples.find(person => person.id = id);
+        const person = peoples.find(person => person.uid = uid);
         modalBody.innerHTML = '';
         @if($isStaticPage)
         const modalFooter = document.querySelector('.modal-footer');
         modalFooter.innerHTML = `
-        <button onclick="deletePerson(${id})" class="btn btn-primary" data-bs-dismiss="modal">Deletar</button>
+        <button onclick="deletePerson(${person.id})" class="btn btn-primary" data-bs-dismiss="modal">Deletar</button>
         <button type="button" id="btn-footer-modal" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
         `;
         @endif
 
         modalBody.innerHTML = `
-        <p><b>id:</b> ${person.id}</p>
         <p><b>uid:</b> ${person.uid}</p>
         <p><b>password:</b> ${person.password}</p>
         <p><b>first_name:</b> ${person.first_name}</p>
@@ -66,18 +65,7 @@
         <p><b>avatar:</b> ${person.avatar}</p>
         <p><b>gender:</b> ${person.gender}</p>
         <p><b>phone_number:</b> ${person.phone_number}</p>
-        <p><b>social_insurance_number:</b> ${person.social_insurance_number}</p>
         <p><b>date_of_birth:</b> ${person.date_of_birth}</p>
-        <h4 class="subtitle">employment</h4>
-        <p><b>title:</b> ${person.employment_title}</p>
-        <p><b>key_skill:</b> ${person.employment_key_skill}</p>
-        <h4 class="subtitle">address</h4>
-        <p><b>city:</b> ${person.address_city}</p>
-        <p><b>street_name:</b> ${person.address_street_name}</p>
-        <p><b>street_address:</b> ${person.address_street_address}</p>
-        <p><b>zip_code:</b> ${person.address_zip_code}</p>
-        <p><b>state:</b> ${person.address_state}</p>
-        <p><b>country:</b> ${person.address_country}</p>
         `;
     }
 
@@ -110,28 +98,8 @@
         <input type="text" name="gender" id="gender" required></input>
         <p><b>phone_number:</b></p> 
         <input type="text" name="phone_number" id="phone_number" required></input>
-        <p><b>social_insurance_number:</b></p> 
-        <input type="text" name="social_insurance_number" id="social_insurance_number" required></input>
         <p><b>date_of_birth:</b></p> 
         <input type="text" name="date_of_birth" id="date_of_birth" required></input>
-        <h4 class="subtitle">employment</h4>
-        <p><b>title:</b></p> 
-        <input type="text" name="employment_title" id="title" required></input>
-        <p><b>key_skill:</b></p> 
-        <input type="text" name="employment_key_skill" id="key_skill" required></input>
-        <h4 class="subtitle">address</h4>
-        <p><b>city:</b></p> 
-        <input type="text" name="address_city" id="city" required></input>
-        <p><b>street_name:</b></p> 
-        <input type="text" name="address_street_name" id="street_name" required></input>
-        <p><b>street_address:</b></p> 
-        <input type="text" name="address_street_address" id="street_address" required></input>
-        <p><b>zip_code:</b></p> 
-        <input type="text" name="address_zip_code" id="zip_code" required></input>
-        <p><b>state:</b></p> 
-        <input type="text" name="address_state" id="state" required></input>
-        <p><b>country:</b></p> 
-        <input type="text" name="address_country" id="country" required></input>
         </form>
         `;
     }
@@ -148,8 +116,7 @@
                     throw new Error('Parando o loop');
                 }
             });
-        } catch (error) {
-        }
+        } catch (error) {}
 
         if (valido) {
             document.getElementById('addPerson').submit()
@@ -159,7 +126,20 @@
     }
 
     function deletePerson(id) {
-        window.location.href = "/remove-person/" + id;
+        fetch('/remove-person/' + id, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Erro ao deletar:", response.status);
+                }
+            })
+            .catch(error => console.error("Erro:", error));
     }
 </script>
 @endsection

@@ -21,17 +21,8 @@ return new class extends Migration
             $table->string('email');
             $table->string('avatar');
             $table->string('gender');
-            $table->string('phone_number');
-            $table->string('social_insurance_number');
-            $table->string('date_of_birth');
-            $table->string('employment_title');
-            $table->string('employment_key_skill');
-            $table->string('address_city');
-            $table->string('address_street_name');
-            $table->string('address_street_address');
-            $table->string('address_zip_code');
-            $table->string('address_state');
-            $table->string('address_country');
+            $table->string('phone_number')->nullable();
+            $table->string('date_of_birth')->nullable();
             $table->timestamps();
         });
     }
