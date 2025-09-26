@@ -26,8 +26,6 @@ Este é um projeto simples em **Laravel** que exibe dados de pessoas, podendo se
     <img width="1897" height="865" alt="image" src="https://github.com/user-attachments/assets/124f3766-57c1-496a-a95b-772ac88a7f48" />
 </p>
 
-*(substitua a imagem pelo seu print da página principal do projeto)*
-
 ---
 
 ## ⚙️ Como Rodar o Projeto
