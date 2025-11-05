@@ -6,7 +6,10 @@ services:
     container_name: api-randomdata-app
     ports:
       - "8000:8000"
+      - "9003:9003"
     environment:
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
       APP_ENV: local
       APP_DEBUG: true
       DB_CONNECTION: pgsql
@@ -15,10 +18,13 @@ services:
       DB_DATABASE: postgres
       DB_USERNAME: postgres
       DB_PASSWORD: 123456
+      CACHE_DRIVER: redis
+      REDIS_HOST: redis
     volumes:
       - .:/var/www/html
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:16
@@ -32,5 +38,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7
+    container_name: api-randomdata-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
 volumes:
   pgdata:
+  redisdata:

@@ -6,6 +6,7 @@ use App\Http\Controllers;
 use App\Models\RandomPeople;
 use App\Models\Person;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 
 
@@ -14,17 +15,21 @@ class ApiRandomController extends Controller
 
     public function index()
     {
-        // ATENÇÃO: A API random-data-api.com foi descontinuada e não está mais disponível.
-        $url = "https://randomuser.me/api/?results=100";
-        $response = Http::get($url);
+        // chave de cache para identificar os dados no Redis
+        $cacheKey = 'random_people_100';
 
-        // Simula o comportamento sem quebrar a aplicação
-        $people = collect();
+        
+        $people = Cache::remember($cacheKey, now()->addMinutes(10), function () {
+            $url = "https://randomuser.me/api/?results=100";
+            $response = Http::timeout(5)->get($url);
 
-        // Se a API estivesse funcionando:
-        if ($response->successful()) {
+            $people = collect();
+
+            if (! $response->successful()) {
+                return collect();
+            }
             $data = $response->json()["results"];
-            $people = collect($data)->map(fn($item) => new RandomPeople([
+            return collect($data)->map(fn($item) => new RandomPeople([
                 'id' => $item["login"]['uuid'],
                 'uid' => $item["login"]['uuid'],
                 'password' => $item["login"]['password'],
@@ -37,8 +42,8 @@ class ApiRandomController extends Controller
                 'phone_number' => $item['phone'],
                 'date_of_birth' => $item["dob"]['date'],
             ]));
-        }
-        // echo $response;
+        });
+
 
         return view('home', [
             'people' => $people,
