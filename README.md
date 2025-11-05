@@ -12,11 +12,21 @@ Este é um projeto simples em **Laravel** que exibe dados de pessoas, podendo se
 
 ## 🚀 Funcionalidades
 
-- Página inicial consumindo a API pública [Random User](https://randomuser.me/api/?results=100).
-- Página com dados vindos do **Banco de Dados**:
-  - Adicionar pessoas via formulário.
-  - Visualizar detalhes de cada pessoa.
-  - Excluir registros.
+### Página inicial com dados da API pública Random User:
+
+ - Consome a API pública Random User.
+
+ - Visualizar detalhes de cada pessoa.
+
+ - Os dados são armazenados em cache no Redis por 10 minutos, garantindo que as requisições sejam rápidas, apenas após esse período uma nova chamada à API é feita para atualizar os dados.
+
+### Página com dados do Banco de Dados local:
+
+ - Adicionar pessoas via formulário.
+
+ - Visualizar detalhes de cada pessoa.
+
+ - Excluir registros.
 
 ---
 
