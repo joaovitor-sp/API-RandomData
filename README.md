@@ -36,3 +36,11 @@ Depois basta rodar:
 
 ```bash
 docker compose up --build
+```
+
+
+---
+> ⚙️ **Nota:**  
+> O arquivo `.env` foi incluído intencionalmente para facilitar a execução local.  
+> Todas as variáveis são de ambiente de desenvolvimento e não contêm informações sensíveis.
+
