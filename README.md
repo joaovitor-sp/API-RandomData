@@ -20,6 +20,24 @@ Este é um projeto simples em **Laravel** que exibe dados de pessoas, podendo se
 
 ---
 
+## 🛠 Tecnologias Utilizadas
+
+Backend: Laravel
+
+Banco de Dados: PostgreSQL
+
+Cache / Fila: Redis
+
+Containerização: Docker & Docker Compose
+
+Dependências PHP: Composer
+
+Front-end: Blade / JavaScript
+
+APIs externas: Random User
+
+---
+
 ## 🖼️ Prévia do Projeto
 
 <p align="center">
